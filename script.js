@@ -23,6 +23,7 @@ let lockBoard = false;
 let moves = 0;
 let matches = 0;
 let timer = 0;
+let totalPairs = 0;
 let timerInterval = null;
 
 function openRules() {
@@ -61,6 +62,25 @@ function resetGame() {
 
 function shuffle(array) {
   return array.sort(() => Math.random() - 0.5);
+}
+
+function createDeck(pairCount) {
+  const shuffledTastes = shuffle([...tastes]);
+  const pairs = Array.from({ length: pairCount }, (_, index) => {
+    return shuffledTastes[index % shuffledTastes.length];
+  });
+
+  return shuffle([...pairs, ...pairs]);
+}
+
+function hasWon() {
+  return totalPairs > 0 && matches === totalPairs;
+}
+
+function showWinMessage() {
+  setTimeout(() => {
+    alert(`Bravo ! Vous avez trouvé toutes les paires en ${moves} coups et ${timer} secondes. Vous avez entrer dans un tirage au sort de PS5.`);
+  }, 300);
 }
 
 function createCard(cardData) {
@@ -119,12 +139,9 @@ function cardMatch() {
   matches += 1;
   matchesElement.textContent = matches;
   resetTurn();
-  const totalPairs = parseInt(difficultySelect.value, 10) / 2;
-  if (matches === totalPairs) {
+  if (hasWon()) {
     stopTimer();
-    setTimeout(() => {
-      alert(`Bravo ! Vous avez trouvé toutes les paires en ${moves} coups et ${timer} secondes.`);
-    }, 300);
+    showWinMessage();
   }
 }
 
@@ -145,9 +162,8 @@ function startGame() {
   resetGame();
   startTimer();
   const count = parseInt(difficultySelect.value, 10);
-  const pairCount = count / 2;
-  const selectedTastes = shuffle([...tastes]).slice(0, pairCount);
-  const deck = shuffle([...selectedTastes, ...selectedTastes]);
+  totalPairs = count / 2;
+  const deck = createDeck(totalPairs);
 
   const columns = count <= 12 ? 3 : count <= 20 ? 4 : 6;
   board.style.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`;
