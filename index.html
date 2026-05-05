@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory YO</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div>
+        <h1>Memory YO</h1>
+        <p>Retrouvez toutes les paires de bouteilles YO en un minimum de coups.</p>
+      </div>
+      <button id="open-rules" class="primary-btn">Règles</button>
+    </header>
+
+    <section class="controls">
+      <label for="difficulty">Niveau :</label>
+      <select id="difficulty">
+        <option value="12">Facile - 12 cartes (6 paires)</option>
+        <option value="20">Moyen - 20 cartes (10 paires)</option>
+        <option value="32">Difficile - 32 cartes (16 paires)</option>
+      </select>
+      <button id="start-game" class="primary-btn">Jouer</button>
+    </section>
+
+    <section class="stats">
+      <div>Coups : <span id="moves">0</span></div>
+      <div>Paires trouvées : <span id="matches">0</span></div>
+      <div>Temps : <span id="timer">0</span> s</div>
+    </section>
+
+    <section id="board" class="board"></section>
+  </main>
+
+  <div id="rules-modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="close-rules" class="close-btn">×</button>
+      <h2>Règles : Memory YO</h2>
+      <p>Objectif : Retrouver toutes les paires de cartes identiques en un minimum de coups.</p>
+      <ul>
+        <li>Cliquez sur une carte pour la retourner.</li>
+        <li>Cliquez sur une deuxième carte pour tenter de former une paire.</li>
+        <li>Si les cartes sont identiques, elles restent visibles.</li>
+        <li>Si elles sont différentes, elles se retournent.</li>
+        <li>Mémorisez les positions pour gagner rapidement.</li>
+      </ul>
+      <h3>Niveaux :</h3>
+      <ul>
+        <li>Facile : 12 cartes (6 paires)</li>
+        <li>Moyen : 20 cartes (10 paires)</li>
+        <li>Difficile : 32 cartes (16 paires)</li>
+      </ul>
+      <p>Astuce : développez une stratégie de mémorisation systématique !</p>
+      <button id="close-rules-footer" class="primary-btn">Compris !</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
