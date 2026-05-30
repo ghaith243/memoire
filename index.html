@@ -1,63 +1,1118 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Memory YO</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Memory YO | YOYO</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --bg: #efe4d7;
+      --bg-soft: #f7efe6;
+      --panel: #f8f2eb;
+      --panel-2: #fffaf5;
+
+      --brown: #5a240c;
+      --brown-2: #7b3d18;
+      --brown-3: #9b6b45;
+
+      --line: rgba(90, 36, 12, 0.12);
+      --text: #3a1f12;
+      --muted: #8c6b56;
+
+      --gold: #e8b14b;
+      --green: #5f8d38;
+
+      --shadow: 0 18px 45px rgba(69, 34, 14, 0.12);
+
+      --card-w: 92px;
+      --card-gap: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(255, 255, 255, 0.55), transparent 30%),
+        linear-gradient(180deg, #f5ede4 0%, #ecdfcf 100%);
+      color: var(--text);
+      padding: 12px;
+      overflow: hidden;
+    }
+
+    button,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      width: min(1240px, 100%);
+      height: calc(100vh - 24px);
+      margin: 0 auto;
+      background: rgba(250, 245, 238, 0.96);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-rows: auto auto auto 1fr auto;
+      gap: 12px;
+      padding: 16px 18px 12px;
+      overflow: hidden;
+    }
+
+    /* TOP */
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #fff2df, #efd4b1);
+      border: 1px solid rgba(90, 36, 12, 0.08);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .brand-text h1 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      line-height: 0.95;
+      color: var(--brown);
+      letter-spacing: -0.03em;
+    }
+
+    .brand-text p {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 800;
+      font-size: 0.93rem;
+      cursor: pointer;
+      transition: 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brown), #7a2e08);
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(90, 36, 12, 0.18);
+    }
+
+    .btn-soft {
+      background: #fff9f2;
+      color: var(--brown);
+      border: 1px solid var(--line);
+    }
+
+    /* TOOLBAR */
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1.2fr auto auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .level-box,
+    .stat-row {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 10px 14px;
+      box-shadow: 0 4px 12px rgba(90, 36, 12, 0.04);
+    }
+
+    .level-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .level-box label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--brown-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+    }
+
+    .level-box select {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      outline: none;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: #fff9f2;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 11px 15px;
+      color: var(--brown);
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    /* STATS */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 60px;
+    }
+
+    .stat-label {
+      color: var(--brown-3);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      line-height: 1;
+      font-weight: 900;
+      color: var(--brown);
+    }
+
+    /* MAIN */
+    .game-panel {
+      display: grid;
+      grid-template-columns: 1fr 260px;
+      gap: 14px;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .board-wrap,
+    .side-panel {
+      background: linear-gradient(180deg, #fffaf5 0%, #f6eee5 100%);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      overflow: hidden;
+      min-height: 0;
+    }
+
+    .board-head {
+      padding: 14px 16px 10px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .board-head h2 {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      color: var(--brown);
+      letter-spacing: -0.03em;
+    }
+
+    .board-head p {
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-top: 4px;
+    }
+
+    .small-pill {
+      background: #fff6ea;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 800;
+      color: var(--brown);
+      font-size: 0.92rem;
+    }
+
+    .board-area {
+      height: calc(100% - 78px);
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .board {
+      display: grid;
+      gap: var(--card-gap);
+      justify-content: center;
+      align-content: center;
+      width: 100%;
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    /* CARDS */
+    .card {
+      width: var(--card-w);
+      aspect-ratio: 3 / 4;
+      border: none;
+      background: transparent;
+      perspective: 1000px;
+      cursor: pointer;
+      padding: 0;
+      min-width: 0;
+    }
+
+    .card:disabled {
+      cursor: default;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.42s ease;
+      border-radius: 18px;
+      box-shadow: 0 10px 20px rgba(90, 36, 12, 0.10);
+    }
+
+    .card.flipped .card-inner,
+    .card.matched .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 18px;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .card-back {
+      background: linear-gradient(180deg, #f1e2cf 0%, #e4d1bc 100%);
+      border: 1px solid rgba(90, 36, 12, 0.08);
+      color: #b88658;
+      font-weight: 900;
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .card-back::before {
+      content: "YO";
+    }
+
+    .card-back::after {
+      content: "YO";
+    }
+
+    .card-front {
+      transform: rotateY(180deg);
+      background: #fffdf9;
+      border: 1px solid rgba(90, 36, 12, 0.10);
+      flex-direction: column;
+      gap: 6px;
+      padding: 8px;
+    }
+
+    .card-front img {
+      width: 78%;
+      height: 78%;
+      object-fit: contain;
+      filter: drop-shadow(0 7px 10px rgba(0, 0, 0, 0.14));
+    }
+
+    .card-front span {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--brown);
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .card.matched .card-front {
+      background: linear-gradient(180deg, #fffdf9 0%, #f1f7ea 100%);
+      border-color: rgba(95, 141, 56, 0.24);
+    }
+
+    .card.matched .card-inner {
+      box-shadow: 0 10px 22px rgba(95, 141, 56, 0.12);
+    }
+
+    /* SIDE PANEL */
+    .side-panel {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .panel-block {
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .panel-block h3 {
+      font-size: 0.84rem;
+      color: var(--brown-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .panel-block p,
+    .panel-block li {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .panel-block ul {
+      padding-left: 18px;
+    }
+
+    .reward-box {
+      background: linear-gradient(135deg, #fff7e8, #f6ead5);
+      border: 1px solid rgba(232, 177, 75, 0.35);
+    }
+
+    .reward-highlight {
+      margin-top: 10px;
+      display: inline-block;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 800;
+      color: var(--brown);
+      font-size: 0.88rem;
+    }
+
+    .bottom-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #b07e58;
+      padding-top: 2px;
+    }
+
+    /* MODALS */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(41, 21, 9, 0.50);
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      z-index: 2000;
+      backdrop-filter: blur(6px);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .modal-card {
+      width: min(640px, 100%);
+      background: linear-gradient(180deg, #fffaf5 0%, #f7efe6 100%);
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.22);
+      padding: 22px;
+      position: relative;
+      animation: pop 0.22s ease;
+    }
+
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: var(--brown);
+      font-size: 1.2rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .modal-card h2 {
+      font-family: "Playfair Display", serif;
+      color: var(--brown);
+      font-size: 2.2rem;
+      line-height: 1;
+      margin-bottom: 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .modal-card p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .modal-card ul {
+      padding-left: 20px;
+      margin-bottom: 14px;
+    }
+
+    .modal-card li {
+      margin-bottom: 8px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .win-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+      margin-bottom: 14px;
+    }
+
+    .win-stats .box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .win-stats .big {
+      display: block;
+      font-weight: 900;
+      color: var(--brown);
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
+
+    .win-stats .small {
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 1080px) {
+      body {
+        overflow: auto;
+      }
+
+      .app {
+        height: auto;
+        min-height: calc(100vh - 24px);
+      }
+
+      .game-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .side-panel {
+        order: 2;
+      }
+
+      .board-wrap {
+        min-height: 520px;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 8px;
+      }
+
+      .app {
+        width: 100%;
+        min-height: calc(100vh - 16px);
+        height: auto;
+        padding: 14px;
+        border-radius: 20px;
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .actions {
+        justify-content: flex-start;
+      }
+
+      .win-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <main class="app">
-    <header class="hero">
-      <div>
-        <h1>Memory YO</h1>
-        <p>Retrouvez toutes les paires de bouteilles YO en un minimum de coups.</p>
-      </div>
-      <button id="open-rules" class="primary-btn">Règles</button>
-    </header>
+    <div class="topbar">
+      <div class="brand">
+        <div class="brand-badge">🍫</div>
 
-    <section class="controls">
-      <label for="difficulty">Niveau :</label>
-      <select id="difficulty">
-        <option value="12">Facile - 12 cartes (6 paires)</option>
-        <option value="20">Moyen - 20 cartes (10 paires)</option>
-        <option value="32">Difficile - 32 cartes (16 paires)</option>
-      </select>
-      <button id="start-game" class="primary-btn">Jouer</button>
-    </section>
+        <div class="brand-text">
+          <h1>Memory YO</h1>
+          <p>Retrouve toutes les paires de bouteilles YOYO avec le moins de coups possible.</p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="open-rules" class="btn btn-soft">Règles du jeu</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="level-box">
+        <label for="difficulty">Niveau</label>
+
+        <select id="difficulty">
+          <option value="12">Facile — 12 cartes (6 paires)</option>
+          <option value="20">Moyen — 20 cartes (10 paires)</option>
+          <option value="32">Difficile — 32 cartes (16 paires)</option>
+        </select>
+      </div>
+
+      <button id="start-game" class="btn btn-primary">Nouvelle partie</button>
+
+      <div class="chip" id="pairsTarget">6 paires</div>
+    </div>
 
     <section class="stats">
-      <div>Coups : <span id="moves">0</span></div>
-      <div>Paires trouvées : <span id="matches">0</span></div>
-      <div>Temps : <span id="timer">0</span> s</div>
+      <div class="stat-row">
+        <div class="stat-label">Coups</div>
+        <div class="stat-value" id="moves">0</div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-label">Paires trouvées</div>
+        <div class="stat-value" id="matches">0</div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-label">Temps</div>
+        <div class="stat-value"><span id="timer">0</span>s</div>
+      </div>
     </section>
 
-    <section id="board" class="board"></section>
+    <section class="game-panel">
+      <div class="board-wrap">
+        <div class="board-head">
+          <div>
+            <h2>Plateau de jeu</h2>
+            <p>Retourne deux cartes pour trouver une paire identique.</p>
+          </div>
+
+          <div class="small-pill" id="boardInfo">6 paires à trouver</div>
+        </div>
+
+        <div class="board-area">
+          <div id="board" class="board"></div>
+        </div>
+      </div>
+
+     
+    </section>
+
+    <div class="bottom-note">✨ Mémorise les positions et termine toutes les paires ✨</div>
   </main>
 
   <div id="rules-modal" class="modal hidden">
-    <div class="modal-content">
-      <button id="close-rules" class="close-btn">×</button>
+    <div class="modal-card">
+      <button id="close-rules" class="modal-close">×</button>
+
       <h2>Règles : Memory YO</h2>
-      <p>Objectif : Retrouver toutes les paires de cartes identiques en un minimum de coups.</p>
+
+      <p>
+        Le but du jeu est de retrouver toutes les paires de cartes identiques en mémorisant leur position.
+      </p>
+
       <ul>
-        <li>Cliquez sur une carte pour la retourner.</li>
-        <li>Cliquez sur une deuxième carte pour tenter de former une paire.</li>
-        <li>Si les cartes sont identiques, elles restent visibles.</li>
-        <li>Si elles sont différentes, elles se retournent.</li>
-        <li>Mémorisez les positions pour gagner rapidement.</li>
+        <li>Clique sur une carte pour la retourner.</li>
+        <li>Clique sur une deuxième carte pour essayer de former une paire.</li>
+        <li>Si les deux cartes sont identiques, elles restent visibles.</li>
+        <li>Si elles sont différentes, elles se retournent automatiquement.</li>
+        <li>Termine toutes les paires pour gagner la partie.</li>
+        <li>En cas de victoire, tu participes au tirage au sort YOYO pour gagner une PS5.</li>
       </ul>
-      <h3>Niveaux :</h3>
-      <ul>
-        <li>Facile : 12 cartes (6 paires)</li>
-        <li>Moyen : 20 cartes (10 paires)</li>
-        <li>Difficile : 32 cartes (16 paires)</li>
-      </ul>
-      <p>Astuce : développez une stratégie de mémorisation systématique !</p>
-      <button id="close-rules-footer" class="primary-btn">Compris !</button>
+
+      <div class="modal-actions">
+        <button id="close-rules-footer" class="btn btn-primary">Compris</button>
+      </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <div id="win-modal" class="modal hidden">
+    <div class="modal-card">
+      <button id="close-win" class="modal-close">×</button>
+
+      <h2>Bravo 🎉</h2>
+
+      <p id="win-message">
+        Tu as trouvé toutes les paires !
+      </p>
+
+      <div class="win-stats">
+        <div class="box">
+          <span class="big" id="final-moves">0</span>
+          <span class="small">Coups</span>
+        </div>
+
+        <div class="box">
+          <span class="big" id="final-time">0s</span>
+          <span class="small">Temps</span>
+        </div>
+
+        <div class="box">
+          <span class="big">PS5</span>
+          <span class="small">Tirage YOYO</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="play-again" class="btn btn-primary">Rejouer</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const board = document.getElementById('board');
+    const movesElement = document.getElementById('moves');
+    const matchesElement = document.getElementById('matches');
+    const timerElement = document.getElementById('timer');
+    const difficultySelect = document.getElementById('difficulty');
+    const startButton = document.getElementById('start-game');
+    const pairsTarget = document.getElementById('pairsTarget');
+    const boardInfo = document.getElementById('boardInfo');
+
+    const rulesModal = document.getElementById('rules-modal');
+    const openRulesButton = document.getElementById('open-rules');
+    const closeRulesButtons = document.querySelectorAll('#close-rules, #close-rules-footer');
+
+    const winModal = document.getElementById('win-modal');
+    const closeWinButton = document.getElementById('close-win');
+    const playAgainButton = document.getElementById('play-again');
+    const winMessage = document.getElementById('win-message');
+    const finalMoves = document.getElementById('final-moves');
+    const finalTime = document.getElementById('final-time');
+
+    const tastes = [
+      { id: 'coco', label: 'Coco', image: 'images/coco.png' },
+      { id: 'choco', label: 'Chocolat', image: 'images/choco.png' },
+      { id: 'chocolat', label: 'Chocolat', image: 'images/chocolat.png' },
+      { id: 'pista', label: 'Pistache', image: 'images/pista.png' },
+      { id: 'fraise', label: 'Fraise', image: 'images/fraise.png' },
+      { id: 'noisette', label: 'Noisette', image: 'images/noisette.png' }
+    ];
+
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+    let moves = 0;
+    let matches = 0;
+    let timer = 0;
+    let totalPairs = 0;
+    let timerInterval = null;
+
+    function shuffle(array) {
+      return [...array].sort(() => Math.random() - 0.5);
+    }
+
+    function openRules() {
+      rulesModal.classList.remove('hidden');
+    }
+
+    function closeRules() {
+      rulesModal.classList.add('hidden');
+    }
+
+    function openWinModal() {
+      winModal.classList.remove('hidden');
+    }
+
+    function closeWinModal() {
+      winModal.classList.add('hidden');
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timer = 0;
+      timerElement.textContent = timer;
+
+      timerInterval = setInterval(() => {
+        timer += 1;
+        timerElement.textContent = timer;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+
+    function resetGame() {
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+      moves = 0;
+      matches = 0;
+
+      movesElement.textContent = moves;
+      matchesElement.textContent = matches;
+      timerElement.textContent = 0;
+
+      board.innerHTML = '';
+
+      closeWinModal();
+      stopTimer();
+    }
+
+    function createDeck(pairCount) {
+      const shuffledTastes = shuffle(tastes);
+
+      const pairs = Array.from({ length: pairCount }, (_, index) => {
+        return shuffledTastes[index % shuffledTastes.length];
+      });
+
+      return shuffle([...pairs, ...pairs]);
+    }
+
+    function hasWon() {
+      return totalPairs > 0 && matches === totalPairs;
+    }
+
+    function showWinMessage() {
+      setTimeout(() => {
+        finalMoves.textContent = moves;
+        finalTime.textContent = `${timer}s`;
+
+        winMessage.innerHTML = `
+          Tu as retrouvé toutes les paires en <strong>${moves}</strong> coups
+          et <strong>${timer}</strong> secondes.<br>
+          Ta victoire te fait entrer dans le <strong>tirage au sort YOYO</strong>
+          pour tenter de gagner une <strong>PS5</strong>.
+        `;
+
+        openWinModal();
+      }, 250);
+    }
+
+    function createCard(cardData) {
+      const card = document.createElement('button');
+      card.className = 'card';
+      card.type = 'button';
+      card.dataset.id = cardData.id;
+      card.dataset.name = cardData.label;
+
+      const inner = document.createElement('div');
+      inner.className = 'card-inner';
+
+      const backFace = document.createElement('div');
+      backFace.className = 'card-face card-back';
+
+      const frontFace = document.createElement('div');
+      frontFace.className = 'card-face card-front';
+
+      const img = document.createElement('img');
+      img.src = cardData.image;
+      img.alt = cardData.label;
+
+      const label = document.createElement('span');
+      label.textContent = cardData.label;
+
+      frontFace.appendChild(img);
+      frontFace.appendChild(label);
+
+      inner.appendChild(backFace);
+      inner.appendChild(frontFace);
+      card.appendChild(inner);
+
+      card.addEventListener('click', () => flipCard(card));
+
+      return card;
+    }
+
+    function flipCard(card) {
+      if (lockBoard || card === firstCard || card.classList.contains('matched')) return;
+
+      card.classList.add('flipped');
+
+      if (!firstCard) {
+        firstCard = card;
+        return;
+      }
+
+      secondCard = card;
+      lockBoard = true;
+
+      moves += 1;
+      movesElement.textContent = moves;
+
+      if (firstCard.dataset.id === secondCard.dataset.id) {
+        cardMatch();
+      } else {
+        cardMismatch();
+      }
+    }
+
+    function cardMatch() {
+      firstCard.classList.add('matched');
+      secondCard.classList.add('matched');
+
+      matches += 1;
+      matchesElement.textContent = matches;
+
+      resetTurn();
+
+      if (hasWon()) {
+        stopTimer();
+        showWinMessage();
+      }
+    }
+
+    function cardMismatch() {
+      setTimeout(() => {
+        firstCard.classList.remove('flipped');
+        secondCard.classList.remove('flipped');
+        resetTurn();
+      }, 850);
+    }
+
+    function resetTurn() {
+      [firstCard, secondCard] = [null, null];
+      lockBoard = false;
+    }
+
+    function updateLayout(count) {
+      const root = document.documentElement;
+      const boardArea = document.querySelector('.board-area');
+
+      let columns = 4;
+      let rows = 3;
+      let maxCardWidth = 92;
+      let gap = 12;
+
+      if (count === 12) {
+        columns = 4;
+        rows = 3;
+        maxCardWidth = 92;
+        gap = 12;
+      } else if (count === 20) {
+        columns = 5;
+        rows = 4;
+        maxCardWidth = 76;
+        gap = 10;
+      } else {
+        columns = 8;
+        rows = 4;
+        maxCardWidth = 58;
+        gap = 8;
+      }
+
+      if (window.innerWidth < 760) {
+        if (count === 12) {
+          columns = 3;
+          rows = 4;
+          maxCardWidth = 78;
+          gap = 9;
+        } else if (count === 20) {
+          columns = 4;
+          rows = 5;
+          maxCardWidth = 64;
+          gap = 8;
+        } else {
+          columns = 4;
+          rows = 8;
+          maxCardWidth = 52;
+          gap = 7;
+        }
+      }
+
+      const areaWidth = boardArea.clientWidth - 24;
+      const areaHeight = boardArea.clientHeight - 24;
+
+      const cardWidthByWidth = (areaWidth - gap * (columns - 1)) / columns;
+      const cardWidthByHeight = ((areaHeight - gap * (rows - 1)) / rows) * 0.75;
+
+      const finalCardWidth = Math.floor(
+        Math.min(maxCardWidth, cardWidthByWidth, cardWidthByHeight)
+      );
+
+      root.style.setProperty('--card-w', `${Math.max(finalCardWidth, 42)}px`);
+      root.style.setProperty('--card-gap', `${gap}px`);
+
+      board.style.gridTemplateColumns = `repeat(${columns}, var(--card-w))`;
+
+      pairsTarget.textContent = `${count / 2} paires`;
+      boardInfo.textContent = `${count / 2} paires à trouver`;
+    }
+
+    function startGame() {
+      resetGame();
+      startTimer();
+
+      const count = parseInt(difficultySelect.value, 10);
+      totalPairs = count / 2;
+
+      const deck = createDeck(totalPairs);
+
+      deck.forEach(cardData => {
+        board.appendChild(createCard(cardData));
+      });
+
+      requestAnimationFrame(() => {
+        updateLayout(count);
+      });
+    }
+
+    openRulesButton.addEventListener('click', openRules);
+
+    closeRulesButtons.forEach(button => {
+      button.addEventListener('click', closeRules);
+    });
+
+    startButton.addEventListener('click', startGame);
+
+    difficultySelect.addEventListener('change', () => {
+      startGame();
+    });
+
+    closeWinButton.addEventListener('click', closeWinModal);
+
+    playAgainButton.addEventListener('click', () => {
+      closeWinModal();
+      startGame();
+    });
+
+    rulesModal.addEventListener('click', (event) => {
+      if (event.target === rulesModal) closeRules();
+    });
+
+    winModal.addEventListener('click', (event) => {
+      if (event.target === winModal) closeWinModal();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeRules();
+        closeWinModal();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      const count = parseInt(difficultySelect.value, 10);
+
+      requestAnimationFrame(() => {
+        updateLayout(count);
+      });
+    });
+
+    startGame();
+  </script>
 </body>
 </html>
